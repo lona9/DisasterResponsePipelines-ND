@@ -17,10 +17,12 @@ def load_data(database_filepath):
     X, y = Feature and target variables obtained from the dataframe.
     """
 
-    engine = create_engine('sqlite:///InsertDatabaseName.db')
-    df = pd.read_sql_table('InsertTableName', con=engine)
+    engine = create_engine(f'sqlite:///{database_filepath}')
+    table_name = database_filepath.split("/")[-1][:-3]
+    df = pd.read_sql_table(table_name, con=engine)
 
     X = df.message
+
     # drop unnecessary columns, plus child_alone which only had 0 values
     # as seen during assessment of the dataframe
     y = df.drop(columns=["id", "message", "original", "genre", "child_alone"])
