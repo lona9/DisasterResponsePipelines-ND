@@ -141,7 +141,7 @@ def save_model(model, model_filepath):
     Saved model file.
     """
 
-    with open(model_filepath, "w+") as f:
+    with open(model_filepath, "wb") as f:
         pickle.dump(model, f)
 
 def main():
