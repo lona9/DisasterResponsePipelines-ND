@@ -21,7 +21,7 @@ from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.pipeline import Pipeline
 from sklearn.metrics import confusion_matrix, classification_report
 from sklearn.feature_extraction.text import TfidfTransformer, CountVectorizer
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier
 from sklearn.multioutput import MultiOutputClassifier
 from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import accuracy_score
@@ -45,7 +45,7 @@ def load_data(database_filepath):
 
     # drop unnecessary columns, plus child_alone which only had 0 values
     # as seen during assessment of the dataframe
-    y = df.drop(columns=["id", "message", "original", "genre", "child_alone"])
+    y = df.drop(columns=["id", "message", "original", "genre"])
 
     category_names = list(np.array(y.columns))
 
@@ -100,15 +100,15 @@ def build_model():
     pipeline = Pipeline([
                 ('vect', CountVectorizer(tokenizer=tokenize)),
                 ('tfidf', TfidfTransformer()),
-                ('clf', MultiOutputClassifier(RandomForestClassifier()))
+                ('clf', MultiOutputClassifier(AdaBoostClassifier()))
     ])
 
     parameters = {
         "tfidf__use_idf": [True, False],
-        "clf__estimator__n_estimators": [10, 100],
+        "clf__estimator__n_estimators": [50, 100],
     }
 
-    model = GridSearchCV(pipeline, parameters, verbose = 4)
+    model = GridSearchCV(pipeline, parameters, verbose = 10)
 
     return model
 

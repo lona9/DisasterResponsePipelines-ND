@@ -49,6 +49,9 @@ def clean_data(df):
     #clean rows with invalid values found in assessment
     df = df[df.related != 2]
 
+    #clean column with only 0 values found in assessment
+    df = df.drop(columns=["child_alone"])
+
     #drop duplicate rows
     df.drop_duplicates(inplace=True)
     return df
