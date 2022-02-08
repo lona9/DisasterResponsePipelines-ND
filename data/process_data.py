@@ -41,12 +41,13 @@ def clean_data(df):
         categories[column] = categories[column].str[-1]
         categories[column] = categories[column].astype(int)
 
-    #clean rows with invalid values found in assessment
-    categories = categories[categories.related != 2]
 
     #drop category columns and replace with new boolean columns
     df.drop(columns=["categories"], inplace=True)
     df = pd.concat([df, categories], axis=1)
+
+    #clean rows with invalid values found in assessment
+    df = df[df.related != 2]
 
     #drop duplicate rows
     df.drop_duplicates(inplace=True)
