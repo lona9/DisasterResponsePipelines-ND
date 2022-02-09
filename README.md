@@ -51,6 +51,8 @@ The following repository requires the following libraries to run properly:
 5. You can type your message in english here and then click on "Classify Message" to get your prediction:
 <img width="641" alt="Captura de Pantalla 2022-02-08 a la(s) 20 51 35" src="https://user-images.githubusercontent.com/77977899/153095332-92fae0bc-f236-416c-98be-f855fa77ec7d.png">
 
+6. You can also see some visualizations about the data on the main page of the app.
+
 -----
 
 ### Discusion

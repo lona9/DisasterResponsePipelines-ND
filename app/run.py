@@ -38,13 +38,20 @@ model = joblib.load("../models/classifier.pkl")
 @app.route('/index')
 def index():
 
-    # extract data needed for visuals
-    # TODO: Below is an example - modify to extract data for your own visuals
-    genre_counts = df.groupby('genre').count()['message']
-    genre_names = list(genre_counts.index)
+    categories = df.drop(columns=["id", "message", "original", "genre"])
+
+    genre_names = list(categories.columns)
+    genre_counts = list(categories.sum())
+
+    total_messages = df.id.count()
+    pctg_english_messages = df.original.isnull().sum() / total_messages * 100
+    pctg_translated_messages = df.original.notnull().sum() / total_messages * 100
+
+    language_values = [pctg_english_messages, pctg_translated_messages]
+    labels = ["English Messages", "Translated Messages"]
+
 
     # create visuals
-    # TODO: Below is an example - modify to create your own visuals
     graphs = [
         {
             'data': [
@@ -55,12 +62,33 @@ def index():
             ],
 
             'layout': {
-                'title': 'Distribution of Message Genres',
+                'title': 'Distribution of Message Categories',
                 'yaxis': {
                     'title': "Count"
                 },
                 'xaxis': {
-                    'title': "Genre"
+                    'title': "Categories",
+                    'tickangle': 30
+                }
+            }
+        },
+
+
+        {
+            'data': [
+                Bar(
+                    x=labels,
+                    y=language_values
+                )
+            ],
+
+            'layout': {
+                'title': 'Proportion of Original Message Language',
+                'yaxis': {
+                    'title': "Percentage of total messages"
+                },
+                'xaxis': {
+                    'title': "Original language"
                 }
             }
         }
